@@ -1,98 +1,61 @@
-# OTClientV8
+# OTCv8 Developer Editon (sources)
 
-OTClientV8 is highly optimized, cross-platform tile based 2d game engine built with c++17, lua, physfs, OpenGL ES 2.0 and OpenAL.
-It has been created as alternative client for game called [Tibia](https://tibia.com/), but now it's much more functional and powerful.
-It works well even on 12 years old computers. In 2023 it reached 1 mln unique installations, including 250k android installations.
+Ready to use binaries are available in [OTCv8/otclientv8](https://github.com/OTCv8/otclientv8) repository.
 
-Supported platforms:
-- Windows (min. Windows 7, requires https://aka.ms/vs/16/release/vc_redist.x86.exe)
-- Android (min. 5.0)
-- Linux
-- Mac Os (requires https://www.xquartz.org/)
+OTCv8 sources. You can add whatever you want and create pull request with your changes.
+Accepted pull requests will be added to official OTCv8 version, so if you want a new feature in OTCv8, just add it here and wait for approval.
+If you add custom feature, make sure it's optional and can be enabled via g_game.enableFeature function, otherwise your pull request will be rejected.
 
-### Forum: [https://otland.net/forums/otclient.494/](https://otland.net/forums/otclient.494/)
-### Discord: [https://discord.gg/feySup6](https://discord.gg/feySup6)
-### Website: [http://otclient.ovh](http://otclient.ovh)
-### Wiki: [https://github.com/OTCv8/otclientv8/wiki](https://github.com/OTCv8/otclientv8/wiki)
+This repository uses Github Actions to build and test OTCv8 automaticlly whenever you push changes to repository.
 
-## Version for developers (sources)
+Check Actions tab to see test results or to download latest binaries. ![Workflow status](https://github.com/OTCv8/otcv8-dev/actions/workflows/ci-cd.yml/badge.svg)
 
-In this repository, you can find clean, always up-to-date, ready to use version of OTClientv8. Most commits starting from version 3.0 are automated using GitHub Actions. If you want to help with development, please visit repository for developers - https://github.com/OTCv8/otcv8-dev
+## Compilation
 
-## FEATURES
-- Rewritten and optimized rendering (60 fps on 11 years old computer)
-- Better DirectX9 and DirectX11 support
-- Adaptive rendering (automated graphics optimizations)
-- Rewritten and optimized light rendering
-- Rewritten path finding and auto walking
-- Rewritten walking system with animations
-- HTTP/HTTPS lua API with JSON support
-- WebSocket lua API
-- Auto updater with failsafe (recovery) mode
-- New filesystem
-- File encryption and compression
-- Automatic diagnostic system
-- Refreshed interface
-- New crash and error handler
-- New HTTP login protocol
-- Ingame shop
-- Updated hotkey manager
-- Updated and optimized battle list
-- Crosshair, floor fading, extra health/mana bars and panels
-- Much more client options
-- Removed a lot of useless and outdated things
-- Advanced bot
-- Linux version
-- Full tibia 11.00 support
-- Layouts
-- New login server (with ingame account and character creation)
-- Support for proxies to lower latency and protect against DDoS
+### Automatic
 
-### And hundreds of smaller features, optimizations and bug fixes!
-### Check out [Wiki page](https://github.com/OTCv8/otclientv8/wiki) to see how activate and use new features
+You can clone repoistory and use github action build-on-request workload.
 
-### Old tools, like updater and tutorials has been moved to: [OTCv8/otcv8-tools](https://github.com/OTCv8/otcv8-tools)
-### There's github repo of tfs 1.3 with otclientv8 features: [OTCv8/otclientv8-tfs](https://github.com/OTCv8/forgottenserver)
+### Windows
 
-## Quick Start for players
+You need visual studio 2019 and vcpkg with commit `3b3bd424827a1f7f4813216f6b32b6c61e386b2e` ([download](https://github.com/microsoft/vcpkg/archive/3b3bd424827a1f7f4813216f6b32b6c61e386b2e.zip)).
 
-Download whole repository and run one of binary file. 
-
-## Quick Start for server owners
-
-Open `init.lua` and edit:
-
-```
--- CONFIG
-APP_NAME = "otclientv8" -- important, change it, it's name for config dir and files in appdata
-APP_VERSION = 1337      -- client version for updater and login to indentify outdated client
-DEFAULT_LAYOUT = "retro"
-
--- If you don't use updater or other service, set it to updater = ""
-Services = {
-  website = "http://otclient.ovh", -- currently not used
-  updater = "http://otclient.ovh/api/updater.php",
-  news = "http://otclient.ovh/api/news.php",
-  stats = "",
-  crash = "http://otclient.ovh/api/crash.php",
-  feedback = "http://otclient.ovh/api/feedback.php"
-}
-
--- Servers accept http login url or ip:port:version
-Servers = {
-  OTClientV8 = "http://otclient.ovh/api/login.php",
-  OTClientV8proxy = "http://otclient.ovh/api/login.php?proxy=1",
-  OTClientV8classic = "otclient.ovh:7171:1099",
-  OTClientV8cwithfeatures = "otclient.ovh:7171:1099:25:30:80:90",
-}
-ALLOW_CUSTOM_SERVERS = true -- if true it will show option ANOTHER on server list
--- CONFIG END
+Then you install vcpkg dependencies:
+```bash
+vcpkg install boost-iostreams:x86-windows-static boost-asio:x86-windows-static boost-beast:x86-windows-static boost-system:x86-windows-static boost-variant:x86-windows-static boost-lockfree:x86-windows-static boost-process:x86-windows-static boost-program-options:x86-windows-static luajit:x86-windows-static glew:x86-windows-static boost-filesystem:x86-windows-static boost-uuid:x86-windows-static physfs:x86-windows-static openal-soft:x86-windows-static libogg:x86-windows-static libvorbis:x86-windows-static zlib:x86-windows-static libzip:x86-windows-static openssl:x86-windows-static
 ```
 
-Also remember to add your sprite and data file to data/things
+and then you can compile static otcv8 version.
 
-That's it, you're ready to use OTClientV8.
+### Linux
 
-DirectX version requires 3 dlls: libEGL.dll libGLESv2.dll d3dcompiler_47.dll
+on linux you need:
+- vcpkg from commit `761c81d43335a5d5ccc2ec8ad90bd7e2cbba734e`
+- boost >=1.67 and libzip-dev, physfs >= 3
+- gcc >=9
 
-If it can't start (missing dlls) then user need to install visual studio 2019 redistributable x86: https://aka.ms/vs/16/release/vc_redist.x86.exe
+Then just run mkdir build && cd build && cmake .. && make -j8
+
+### Android
+
+To compile on android you need to create C:\android with
+- android-ndk-r21b https://dl.google.com/android/repository/android-ndk-r21d-windows-x86_64.zip
+- libs from android_libs.7z
+
+Also install android extension for visual studio
+In visual studio go to options -> cross platform -> c++ and set Android NDK to C:\android\android-ndk-r21b
+Right click on otclientv8 -> proporties -> general and change target api level to android-25
+
+Put data.zip in android/otclientv8/assets
+You can use powershell script create_android_assets.ps1 to create them automaticly (won't be encrypted)
+
+## Useful tips
+
+- To run tests manually, unpack tests.7z and use command `otclient_debug.exe --test`
+- To test mobile UI use command `otclient_debug.exe --mobile`
+
+## Links
+
+- Discord: https://discord.gg/feySup6
+- Forum: http://otclient.net
+- Email: otclient@otclient.ovh
